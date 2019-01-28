@@ -663,6 +663,10 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { screen = 1, tag = awful.util.tagnames[1] } },
 
+    -- Set EiskaltDC to always map on the fifth tag on screen 5.
+    { rule = { instance = "eiskaltdcpp-qt" },
+      properties = { screen = 1, tag = awful.util.tagnames[5] } },
+
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
 }
