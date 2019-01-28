@@ -59,14 +59,15 @@ end
 -- run_once({ "urxvtd", "unclutter -root" }) -- entries must be separated by commas
 
 -- This function implements the XDG autostart specification
---[[
+--
 awful.spawn.with_shell(
     'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
     'xrdb -merge <<< "awesome.started:true";' ..
+    'xfce4-panel;' ..
     -- list each of your autostart commands, followed by ; inside single quotes, followed by ..
     'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
 )
---]]
+--
 
 -- }}}
 
@@ -92,7 +93,6 @@ local terminal     = "gnome-terminal"
 local editor       = os.getenv("EDITOR") or "nvim"
 local browser      = "firefox"
 local guieditor    = "gedit"
-local scrlocker    = "slock"
 
 awful.util.terminal = terminal
 awful.util.tagnames = {"firefox", "text", "term", "misc", "server"}
@@ -245,9 +245,6 @@ globalkeys = my_table.join(
     awful.key({ altkey }, "p", function() os.execute("screenshot") end,
               {description = "take a screenshot", group = "hotkeys"}),
 
-    -- X screen locker
-    awful.key({ altkey, "Control" }, "l", function () os.execute(scrlocker) end,
-              {description = "lock screen", group = "hotkeys"}),
 
     -- Hotkeys
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
@@ -364,6 +361,9 @@ globalkeys = my_table.join(
               {description = "reload awesome", group = "awesome"}),
     awful.key({ modkey, "Shift"   }, "q", function () os.execute('xfce4-session-logout') end,
               {description = "logout of xfce", group = "awesome"}),
+    -- Xfce locker
+    awful.key({ modkey, "Shift" }, "l", function () os.execute(xflock4) end,
+              {description = "lock screen", group = "hotkeys"}),
 
     awful.key({ altkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
               {description = "increase master width factor", group = "layout"}),
