@@ -63,9 +63,10 @@ end
 awful.spawn.with_shell(
     'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
     'xrdb -merge <<< "awesome.started:true";' ..
-    'xfce4-panel;' ..
     -- list each of your autostart commands, followed by ; inside single quotes, followed by ..
-    'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
+    'xfsettingsd;'..
+    'compton;'
+    -- 'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
 )
 --
 
@@ -86,7 +87,7 @@ local themes = {
     "vertex",          -- 10
 }
 
-local chosen_theme = themes[6]
+local chosen_theme = themes[5]
 local modkey       = "Mod4"
 local altkey       = "Mod1"
 local terminal     = "gnome-terminal"
@@ -302,8 +303,8 @@ globalkeys = my_table.join(
             if client.focus then client.focus:raise() end
         end,
         {description = "focus right", group = "client"}),
-    awful.key({ modkey,           }, "w", function () awful.util.mymainmenu:show() end,
-              {description = "show main menu", group = "awesome"}),
+    -- awful.key({ modkey,           }, "w", function () awful.util.mymainmenu:show() end,
+              -- {description = "show main menu", group = "awesome"}),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
@@ -362,7 +363,7 @@ globalkeys = my_table.join(
     awful.key({ modkey, "Shift"   }, "q", function () os.execute('xfce4-session-logout') end,
               {description = "logout of xfce", group = "awesome"}),
     -- Xfce locker
-    awful.key({ modkey, "Shift" }, "l", function () os.execute(xflock4) end,
+    awful.key({ altkey, "Control" }, "l", function () os.execute('xflock4') end,
               {description = "lock screen", group = "hotkeys"}),
 
     awful.key({ altkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -508,10 +509,16 @@ globalkeys = my_table.join(
     --]]
     --rofi
     awful.key({ modkey }, "r", function ()
-            os.execute(string.format("rofi -show %s -theme %s", 'run', 'solarized_alternate'
+            os.execute(string.format("rofi -show %s -theme %s", 'drun', 'solarized_alternate'
             ))
         end,
-        {description = "show rofi", group = "launcher"}),
+        {description = "show rofi drun", group = "launcher"}),
+    -- For Window switcher
+    awful.key({ modkey }, "w", function ()
+            os.execute(string.format("rofi -show %s -theme %s", 'window', 'android_notification'
+            ))
+        end,
+        {description = "show rofi window switcher", group = "launcher"}),
     -- Prompt
     -- awful.key({ modkey }, "r", function () awful.screen.focused().mypromptbox:run() end,
               -- {description = "run prompt", group = "launcher"}),
